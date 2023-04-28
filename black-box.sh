@@ -11,4 +11,4 @@ module load u18/cuda/11.6
 cd /home2/esh//smai-proj/Simple-Black-box-Adversarial-Attacks
 
 CUDA_VISIBLE_DEVICES=0
-python black-box.py
+python black-box2.py
