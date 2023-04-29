@@ -7,6 +7,8 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 import torch.nn as nn
 import pickle
+from sklearn.metrics import accuracy_score
+
 
 class TinyImageNetDataset(torch.utils.data.Dataset):
 
@@ -73,15 +75,13 @@ class Resnet50TinyImageNet(nn.Module):
             print('Epoch: {} \tTraining Loss: {:.6f} \tTraining Accuracy: {:.6f}'.format(
                 epoch+1, train_loss, train_acc))
             
-            # save model
-            torch.save(self.model.state_dict(), 'resnet50_ft.ckpt')
-
 
     def test(self, test_loader):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
         self.model.eval()
         predictions = []
+        true = []
 
         for image, label in tqdm.tqdm(test_loader):
             image = image.to(device)
@@ -90,6 +90,12 @@ class Resnet50TinyImageNet(nn.Module):
             outputs = self.model(image)
             _, prediction = torch.max(outputs, 1)
             predictions.append(prediction)
+            true.append(label.data)
+
+        predictions = torch.cat(predictions, dim=0)
+        true = torch.cat(true, dim=0)
+
+        print("Accuracy: ", accuracy_score(true.cpu(), predictions.cpu()))
 
         return predictions
 
@@ -99,7 +105,7 @@ class Resnet50TinyImageNet(nn.Module):
 # Hyperparameters
 
 BATCH_SIZE = 64
-EPOCHS = 10
+EPOCHS = 15
 LEARNING_RATE = 0.001
 
 ## ______________
@@ -131,9 +137,18 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 model.train(train_loader, criterion, optimizer, EPOCHS)
 
+torch.save(model.state_dict(), 'res15.pth')
 pred = model.test(val_loader)
 
-with open('pred.pkl', 'wb') as f:
+with open('pred_15.pkl', 'wb') as f:
     pickle.dump(pred, f)
+
+# save val laoder and train loader
+with open('val_loader_15.pkl', 'wb') as f:
+    pickle.dump(val_loader, f)
+
+with open('train_loader_15.pkl', 'wb') as f:
+    pickle.dump(train_loader, f)
+
 
 
