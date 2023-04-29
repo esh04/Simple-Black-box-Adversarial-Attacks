@@ -6,6 +6,7 @@ from torchvision.models import resnet50
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 import torch.nn as nn
+import pickle
 
 class TinyImageNetDataset(torch.utils.data.Dataset):
 
@@ -36,8 +37,6 @@ class Resnet50TinyImageNet(nn.Module):
     def __init__(self):
         super(Resnet50TinyImageNet, self).__init__()
         self.model = resnet50()
-        for param in self.model.parameters():
-            param.requires_grad = False
         num_features = self.model.fc.in_features
         self.model.fc = nn.Linear(num_features, 200)
     
@@ -75,7 +74,25 @@ class Resnet50TinyImageNet(nn.Module):
                 epoch+1, train_loss, train_acc))
             
             # save model
-            torch.save(self.model.state_dict(), 'resnet50_tinyimagenet.ckpt')
+            torch.save(self.model.state_dict(), 'resnet50_ft.ckpt')
+
+
+    def test(self, test_loader):
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(device)
+        self.model.eval()
+        predictions = []
+
+        for image, label in tqdm.tqdm(test_loader):
+            image = image.to(device)
+            label = label.to(device)
+
+            outputs = self.model(image)
+            _, prediction = torch.max(outputs, 1)
+            predictions.append(prediction)
+
+        return predictions
+
             
 ## ______________
 
@@ -113,3 +130,10 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 model.train(train_loader, criterion, optimizer, EPOCHS)
+
+pred = model.test(val_loader)
+
+with open('pred.pkl', 'wb') as f:
+    pickle.dump(pred, f)
+
+
