@@ -90,9 +90,8 @@ class Resnet50TinyImageNet(nn.Module):
             print("Epoch: {} \tTraining Loss: {:.6f} \tTraining Accuracy: {:.6f} \tValidation Loss: {:.6f} \tValidation Accuracy: {:.6f}".format(epoch+1, train_loss, train_acc, val_loss, val_acc))
 
 
-    def test(self, test_loader):
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model.to(device)
+    def test(self, test_loader, device):
+
         self.model.eval()
         predictions = []
         true = []
@@ -150,15 +149,19 @@ criterion = nn.CrossEntropyLoss()
 # optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 optimizer = torch.optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=MOMENTUM)
 
-model.train(train_loader, val_loader, criterion, optimizer, EPOCHS)
+# model.train(train_loader, val_loader, criterion, optimizer, EPOCHS)
 
-torch.save(model.state_dict(), './model/res15.pth')
+# torch.save(model.state_dict(), './model/res3.pth')
 
 ## ______________
 
 # Test model
 
-# pred = model.test(val_loader)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+model.load_state_dict(torch.load('./model/res3.pth',  map_location=device))
+
+pred = model.test(val_loader, device)
 
 # with open('pred_15.pkl', 'wb') as f:
 #     pickle.dump(pred, f)
