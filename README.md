@@ -23,6 +23,7 @@ Simple-Black-box-Adversarial-Attacks/
 ├── graphs.ipynb
 ├── Adverse_Attack.ipynb
 └── Presentation.pdf
+└── requirements.txt
 
 - Due to lack of space all the data is uploaded to onedrive, links of which can be found in the README.md of the data folder. The same is applicable for the model
 
