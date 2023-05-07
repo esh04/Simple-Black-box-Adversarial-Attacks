@@ -13,3 +13,4 @@ cd /home2/esh//smai-proj/Simple-Black-box-Adversarial-Attacks
 CUDA_VISIBLE_DEVICES=0
 python untargetted_dct.py
 # python untargetted.py
+# python targetted.py
