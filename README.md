@@ -2,7 +2,7 @@
 
 Simple black box adversarial attacks refer to the methods of generating adversarial examples for machine learning models without any knowledge of the model's architecture or parameters. These attacks aim to find small perturbations to the input that can cause the model to make incorrect predictions.
 
-Link to the paper reffered: https://arxiv.org/abs/1905.07121
+Link to the paper refered: https://arxiv.org/abs/1905.07121
 
 Simple-Black-box-Adversarial-Attacks/
 ├── README.md
