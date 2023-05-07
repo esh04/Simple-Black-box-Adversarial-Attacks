@@ -5,34 +5,24 @@ Simple black box adversarial attacks refer to the methods of generating adversar
 Link to the paper reffered: https://arxiv.org/abs/1905.07121
 
 Simple-Black-box-Adversarial-Attacks/
-│
 ├── README.md
 ├── data/
-│   ├── README.md
-│ 
+│   └── README.md
 ├── bashscripts/
 │   ├── black-box.sh
 │   └── attack.sh
-│
 ├── logs/
-│   ├── slurm
-│
+│   └── slurm
 ├── model/
-│   ├── README.md
-│
-│── pyscripts/
+│   └── README.md
+├── pyscripts/
 │   ├── targetted.py
 │   ├── untargetted_dct.py
 │   ├── untargetted.py
 │   ├── black-box.py
-│
-│── graphs.ipynb
-│
-│── Adverse_Attack.ipynb
-│
-│── Presentation.pdf
-
-
+├── graphs.ipynb
+├── Adverse_Attack.ipynb
+└── Presentation.pdf
 
 - Due to lack of space all the data is uploaded to onedrive, links of which can be found in the README.md of the data folder. The same is applicable for the model
 
